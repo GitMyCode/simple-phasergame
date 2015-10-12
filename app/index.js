@@ -1,32 +1,41 @@
-var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, render: render });
-var counter = 0;
-var text = 0;
-function preload(){
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update:update });
 
+function preload() {
+    game.load.image('car', 'public/images/car.png');
+    game.load.image('tinycar', 'public/images/tinycar.png');
 }
 
-function create(){
-  game.stage.backgroundColor = '#6688ee';
+function create() {
+    game.physics.startSystem(Phaser.Physics.P2JS);
+    bullets = game.add.group();
+    for (var i = 0; i < 10; i++) {
+        var bullet = bullets.create(game.rnd.integerInRange(200, 1700), game.rnd.integerInRange(-200, 400), 'tinycar');
+        game.physics.p2.enable(bullet,false);
+    }
+    cursors = game.input.keyboard.createCursorKeys();
+    ship = game.add.sprite(32, game.world.height - 150, 'car');
+    game.physics.p2.enable(ship);
+};
 
-    text = game.add.text(game.world.centerX, game.world.centerY, 'Counter: 0', { font: "64px Arial", fill: "#ffffff", align: "center" });
-    text.anchor.setTo(0.5, 0.5);
+function update() {
+    bullets.forEachAlive(moveBullets,this);  //make bullets accelerate to ship
 
-    //  Here we'll create a basic looped event.
-    //  A looped event is like a repeat event but with no limit, it will literally repeat itself forever, or until you stop it.
+    if (cursors.left.isDown) {ship.body.rotateLeft(100);}   //ship movement
+    else if (cursors.right.isDown){ship.body.rotateRight(100);}
+    else {ship.body.setZeroRotation();}
+    if (cursors.up.isDown){ship.body.thrust(400);}
+    else if (cursors.down.isDown){ship.body.reverse(400);}
+};
 
-    //  The first parameter is how long to wait before the event fires. In this case 1 second (you could pass in 1000 as the value as well.)
-    //  The next two parameters are the function to call ('updateCounter') and the context under which that will happen.
 
-    game.time.events.loop(Phaser.Timer.SECOND, updateCounter, this);
+function moveBullets (bullet) {
+     accelerateToObject(bullet,ship,30);  //start accelerateToObject on every bullet
 }
 
-function render(){
-
-}
-function updateCounter() {
-
-    counter++;
-
-    text.setText('Counter: ' + counter);
-
+function accelerateToObject(obj1, obj2, speed) {
+    if (typeof speed === 'undefined') { speed = 60; }
+    var angle = Math.atan2(obj2.y - obj1.y, obj2.x - obj1.x);
+    obj1.body.rotation = angle + game.math.degToRad(90);  // correct angle of angry bullets (depends on the sprite used)
+    obj1.body.force.x = Math.cos(angle) * speed;    // accelerateToObject
+    obj1.body.force.y = Math.sin(angle) * speed;
 }
