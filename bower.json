@@ -1,0 +1,7 @@
+{
+  "name": "simple-phasergame",
+  "directory": "app/bower_components",
+  "dependencies": {
+    "phaser": "~2.4.3"
+  }
+}
