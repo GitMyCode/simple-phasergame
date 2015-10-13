@@ -32,7 +32,7 @@ gulp.task("server", function() {
 gulp.task("default", function() {
    gulp.run("server");
    gulp.run("bower");
-   gulp.watch(["app/*.html", "*.*"], function() {
+   gulp.watch(["app/*.html","app/*.*", "*.*"], function() {
      gulp.run("server");
      gulp.run("bower");
      gulp.src("*.*").pipe(livereload());

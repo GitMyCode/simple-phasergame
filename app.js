@@ -1,11 +1,62 @@
 var express = require("express");
+var http = require('http');
 var fs = require("fs");
 var url = require("url");
 var path = require("path");
+var io = require("socket.io");
+var PlayerCar = require("./PlayerCar");
 
-var server = express();
-server.use(express.static(__dirname + '/app'));
+
+var app = module.exports.app = express();
+app.use(express.static(__dirname + '/app'));
+
+var server = http.createServer(app);
 server.listen(process.env.PORT || 5001);
+
+var players = [];
+
+
+var tinycars;
+var socket = io.listen(server);
+socket.sockets.on('connection', onClientConnection);
+
+function onClientConnection(client){
+
+   client.on("newPlayer", onNewPlayer);
+   client.on("movePlayer", onMovePlayer);
+}
+
+var onNewPlayer = function(data){
+  var player =  new PlayerCar(0 ,0);
+  player.id = this.id;
+  this.broadcast.emit('newPlayer', player.id);
+  for(var i=0; i< players.length; i++){
+      this.emit("newPlayer", players[i]);
+  }
+  players.push(player);
+};
+
+function onMovePlayer(data){
+  var player = playerById(this.id);
+  console.log(player);
+  player.left = data.left;
+  player.right = data.right;
+  player.up = data.up;
+  player.down = data.down;
+  this.broadcast.emit('movePlayer', data);
+}
+
+function playerById (id) {
+  var i;
+  for (i = 0; i < players.length; i++) {
+    if (players[i].id === id) {
+      return players[i];
+    }
+  }
+
+  return false;
+}
+
 // var app = http.createServer(function(request, response){
 //   console.log("process cwd : " +process.cwd());
 //   var uri = url.parse(request.url).pathname,
