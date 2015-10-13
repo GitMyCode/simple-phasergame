@@ -1,14 +1,14 @@
 
-var RemotePlayer = function(game){
+var RemotePlayer = function(game,id, x ,y){
     var self= this;
   this.game = game;
-  this.car = game.add.sprite(32, game.world.height - 150, 'car');
+  this.car = game.add.sprite(32, game.world.height - 150 , 'car');
   game.physics.p2.enable(this.car);
 
-  this.id = null;
+  this.id = id;
 
-  this.x = 0;
-  this.y = 0;
+  this.x = x;
+  this.y = y;
   this.left = {};
   this.right = {};
   this.up = {};
@@ -33,6 +33,7 @@ RemotePlayer.prototype.update = function(){
   };
 RemotePlayer.prototype.send = function(){
     return {
+      id: this.id,
       left: this.left,
       right: this.right,
       up: this.up,

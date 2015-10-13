@@ -5,7 +5,7 @@ var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', {
 });
 
 var socket;
-var player;
+var thisPlayer;
 var otherPlayers = [];
 function Player() {
   var self= this;
@@ -40,7 +40,6 @@ function Player() {
     };
   };
 }
-var player = new Player();
 
 function preload() {
   game.stage.disableVisibilityChange = true;
@@ -60,7 +59,7 @@ function create() {
   //     game.physics.p2.enable(bullet,false);
   // }
   cursors = game.input.keyboard.createCursorKeys();
-  player = new RemotePlayer(game);
+  thisPlayer = new RemotePlayer(game, Math.floor(Math.random() * 150 +1), Math.floor(Math.random() * game.world.height));
   //
   // player.car = game.add.sprite(32, game.world.height - 150, 'car');
   // game.physics.p2.enable(player.car);
@@ -70,21 +69,18 @@ function create() {
   socket.on("newPlayer", onNewPlayer);
 
 }
+
+function onSocketConnect() {
+  socket.emit("newPlayer", {x : thisPlayer.x, y : thisPlayer.y});
+}
+
 function onNewPlayer(data){
-  newPlayer = new RemotePlayer(game);
-  newPlayer.id = data.id;
+  var newPlayer = new RemotePlayer(game, data.id, data.x, data.y);
   otherPlayers.push(newPlayer);
 }
 
-function onSocketConnect() {
-  socket.emit("newPlayer", {
-    X: player.x,
-    Y: player.Y
-  });
-}
-
 function onMovePlayer(data) {
-
+  var player = playerById(data.id);
   player.left = data.left;
   player.right = data.right;
   player.up = data.up;
@@ -99,12 +95,12 @@ function update() {
       p.update();
   });
 
-  player.left = cursors.left.isDown;
-  player.right = cursors.right.isDown;
-  player.up = cursors.up.isDown;
-  player.down = cursors.down.isDown;
-  player.update();
-  socket.emit('movePlayer', player.send());
+  thisPlayer.left = cursors.left.isDown;
+  thisPlayer.right = cursors.right.isDown;
+  thisPlayer.up = cursors.up.isDown;
+  thisPlayer.down = cursors.down.isDown;
+  thisPlayer.update();
+  socket.emit('movePlayer', thisPlayer.send());
 
 
   // if (cursors.left.isDown) {
@@ -135,4 +131,15 @@ function accelerateToObject(obj1, obj2, speed) {
   obj1.body.rotation = angle + game.math.degToRad(90); // correct angle of angry bullets (depends on the sprite used)
   obj1.body.force.x = Math.cos(angle) * speed; // accelerateToObject
   obj1.body.force.y = Math.sin(angle) * speed;
+}
+
+function playerById (id) {
+  var i;
+  for (i = 0; i < otherPlayers.length; i++) {
+    if (otherPlayers[i].id === id) {
+      return otherPlayers[i];
+    }
+  }
+
+  return false;
 }

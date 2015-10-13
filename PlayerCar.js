@@ -1,9 +1,13 @@
 
 
-var PlayerCar = function(X, Y){
+var PlayerCar = function(id, X, Y){
   var x = X;
   var y = Y;
-  var id;
+  var id = id;
+  var left ;
+  var right ;
+  var up ;
+  var down ;
 
   // Getters and setters
   var getX = function () {
@@ -22,13 +26,37 @@ var PlayerCar = function(X, Y){
     y = newY;
   };
 
+  var update = function(data){
+    left = data.left;
+    right = data.right;
+    up = data.up;
+    down = data.down;
+  };
+
+  var send = function(){
+    return {
+      id : id,
+      x : x,
+      y : y,
+      left: left,
+      right: right,
+      up :up ,
+      down: down
+    };
+  }
   // Define which variables and methods can be accessed
   return {
     getX: getX,
     getY: getY,
     setX: setX,
     setY: setY,
-    id: id
+    update: update,
+    id: id,
+    send: send,
+    left: left,
+    right: right,
+    up :up ,
+    down: down
   };
 };
 

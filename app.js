@@ -27,23 +27,18 @@ function onClientConnection(client){
 }
 
 var onNewPlayer = function(data){
-  var player =  new PlayerCar(0 ,0);
-  player.id = this.id;
-  this.broadcast.emit('newPlayer', player.id);
+  var player =  new PlayerCar(this.id, data.x ,data.y);
+  this.broadcast.emit('newPlayer', player.send());
   for(var i=0; i< players.length; i++){
-      this.emit("newPlayer", players[i]);
+      this.emit("newPlayer", players[i].send());
   }
   players.push(player);
 };
 
 function onMovePlayer(data){
   var player = playerById(this.id);
-  console.log(player);
-  player.left = data.left;
-  player.right = data.right;
-  player.up = data.up;
-  player.down = data.down;
-  this.broadcast.emit('movePlayer', data);
+  player.update(data);
+  this.broadcast.emit('movePlayer', player.send());
 }
 
 function playerById (id) {
