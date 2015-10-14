@@ -2,13 +2,14 @@
 var RemotePlayer = function(game,id, x ,y){
     var self= this;
   this.game = game;
-  this.car = game.add.sprite(x, y , 'car');
-  game.physics.p2.enable(this.car);
+  this.car = this.game.add.sprite(x, y , 'car');
+  this.game.physics.p2.enable(this.car);
 
   this.id = id;
 
   this.lastX = x;
   this.lastY = y;
+  this.lastRotation = 0;
   this.left = {};
   this.right = {};
   this.up = {};
@@ -19,14 +20,17 @@ var RemotePlayer = function(game,id, x ,y){
 RemotePlayer.prototype.updateOther = function(){
     this.car.body.x = this.lastX;
     this.car.body.y = this.lastY;
-    if (this.left) {
-      this.car.body.rotateLeft(100);
-    } //ship movement
-    else if (this.right) {
-      this.car.body.rotateRight(100);
-    } else {
-      this.car.body.setZeroRotation();
-    }
+    this.car.body.rotation = this.lastRotation;
+    // if (this.left) {
+    //   this.car.body.rotateLeft(100);
+    // } //ship movement
+
+  //  this.car.rotation = Math.PI + this.game.physics.arcade.angleToXY(this.car, this.lastX, this.lastY);
+    // else if (this.right) {
+    //   this.car.body.rotateRight(100);
+    // } else {
+    //   this.car.body.setZeroRotation();
+    // }
     // if (this.up) {
     //   this.car.body.thrust(400);
     // } else if (this.down) {
@@ -39,6 +43,7 @@ RemotePlayer.prototype.update = function(){
 
     this.lastX = this.car.body.x;
     this.lastY = this.car.body.y;
+    this.lastRotation = this.car.body.rotation;
     if (this.left) {
       this.car.body.rotateLeft(100);
     } //ship movement
@@ -61,7 +66,8 @@ RemotePlayer.prototype.send = function(){
       up: this.up,
       down: this.down,
       x: this.car.body.x,
-      y: this.car.body.y
+      y: this.car.body.y,
+      rotation: this.car.body.rotation
     };
   };
 

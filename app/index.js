@@ -94,6 +94,7 @@ function onMovePlayer(data) {
   player.down = data.down;
   player.lastX = data.x;
   player.lastY = data.y;
+  player.lastRotation = data.rotation;
 }
 
 function onRemovePlayer(data) {

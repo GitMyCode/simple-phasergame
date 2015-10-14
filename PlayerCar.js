@@ -8,6 +8,7 @@ var PlayerCar = function(idParams, X, Y){
   var right ;
   var up ;
   var down ;
+  var rotation;
 
   // Getters and setters
   var getX = function () {
@@ -33,6 +34,7 @@ var PlayerCar = function(idParams, X, Y){
     down = data.down;
     x = data.x;
     y = data.y;
+    rotation = data.rotation;
   };
 
   var send = function(){
@@ -40,6 +42,7 @@ var PlayerCar = function(idParams, X, Y){
       id : id,
       x : x,
       y : y,
+      rotation: rotation,
       left: left,
       right: right,
       up :up ,
@@ -58,7 +61,8 @@ var PlayerCar = function(idParams, X, Y){
     left: left,
     right: right,
     up :up ,
-    down: down
+    down: down,
+    rotation: rotation
   };
 };
 
