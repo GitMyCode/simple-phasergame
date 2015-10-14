@@ -1,9 +1,9 @@
 
 
-var PlayerCar = function(id, X, Y){
+var PlayerCar = function(idParams, X, Y){
   var x = X;
   var y = Y;
-  var id = id;
+  var id = idParams;
   var left ;
   var right ;
   var up ;
@@ -31,6 +31,8 @@ var PlayerCar = function(id, X, Y){
     right = data.right;
     up = data.up;
     down = data.down;
+    x = data.x;
+    y = data.y;
   };
 
   var send = function(){
@@ -43,7 +45,7 @@ var PlayerCar = function(id, X, Y){
       up :up ,
       down: down
     };
-  }
+  };
   // Define which variables and methods can be accessed
   return {
     getX: getX,

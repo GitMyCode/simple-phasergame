@@ -2,7 +2,7 @@
 var RemotePlayer = function(game,id, x ,y){
     var self= this;
   this.game = game;
-  this.car = game.add.sprite(32, game.world.height - 150 , 'car');
+  this.car = game.add.sprite(x, y , 'car');
   game.physics.p2.enable(this.car);
 
   this.id = id;

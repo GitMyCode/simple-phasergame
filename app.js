@@ -24,6 +24,7 @@ function onClientConnection(client){
 
    client.on("newPlayer", onNewPlayer);
    client.on("movePlayer", onMovePlayer);
+   client.on("disconnect", onDisconnect);
 }
 
 var onNewPlayer = function(data){
@@ -39,6 +40,11 @@ function onMovePlayer(data){
   var player = playerById(this.id);
   player.update(data);
   this.broadcast.emit('movePlayer', player.send());
+}
+
+function onDisconnect(){
+  players.splice(players.indexOf(playerById(this.id), 1));
+  this.broadcast.emit('removePlayer', {id: this.id});
 }
 
 function playerById (id) {
