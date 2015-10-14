@@ -92,6 +92,8 @@ function onMovePlayer(data) {
   player.right = data.right;
   player.up = data.up;
   player.down = data.down;
+  player.lastX = data.x;
+  player.lastY = data.y;
 }
 
 function onRemovePlayer(data) {
@@ -105,7 +107,7 @@ function onRemovePlayer(data) {
 function update() {
   //bullets.forEachAlive(moveBullets,this);  //make bullets accelerate to ship
   otherPlayers.forEach(function(p) {
-    p.update();
+    p.updateOther();
   });
 
   thisPlayer.left = cursors.left.isDown;

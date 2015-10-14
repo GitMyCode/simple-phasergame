@@ -7,8 +7,8 @@ var RemotePlayer = function(game,id, x ,y){
 
   this.id = id;
 
-  this.x = x;
-  this.y = y;
+  this.lastX = x;
+  this.lastY = y;
   this.left = {};
   this.right = {};
   this.up = {};
@@ -16,7 +16,29 @@ var RemotePlayer = function(game,id, x ,y){
 
 };
 
+RemotePlayer.prototype.updateOther = function(){
+    this.car.body.x = this.lastX;
+    this.car.body.y = this.lastY;
+    if (this.left) {
+      this.car.body.rotateLeft(100);
+    } //ship movement
+    else if (this.right) {
+      this.car.body.rotateRight(100);
+    } else {
+      this.car.body.setZeroRotation();
+    }
+    // if (this.up) {
+    //   this.car.body.thrust(400);
+    // } else if (this.down) {
+    //   this.car.body.reverse(400);
+    // }
+
+};
+
 RemotePlayer.prototype.update = function(){
+
+    this.lastX = this.car.body.x;
+    this.lastY = this.car.body.y;
     if (this.left) {
       this.car.body.rotateLeft(100);
     } //ship movement
@@ -37,7 +59,9 @@ RemotePlayer.prototype.send = function(){
       left: this.left,
       right: this.right,
       up: this.up,
-      down: this.down
+      down: this.down,
+      x: this.car.body.x,
+      y: this.car.body.y
     };
   };
 
