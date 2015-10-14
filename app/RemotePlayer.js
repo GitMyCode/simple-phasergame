@@ -45,7 +45,7 @@ RemotePlayer.prototype.updateOther = function() {
     this.car.body.reverse(400);
   }
 
-  if(this.counter == 50){
+  if(this.counter == 10){
     if (this.car.body.x !== this.lastX || this.car.body.y !== this.lastY) {
       this.car.body.x = this.lastX;
       this.car.body.y = this.lastY;
