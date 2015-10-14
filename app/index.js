@@ -87,14 +87,16 @@ function onNewPlayer(data) {
 }
 
 function onMovePlayer(data) {
-  var player = playerById(data.id);
-  player.left = data.left;
-  player.right = data.right;
-  player.up = data.up;
-  player.down = data.down;
-  player.lastX = data.x;
-  player.lastY = data.y;
-  player.lastRotation = data.rotation;
+  var otherPlayer = playerById(data.id);
+
+  otherPlayer.left = data.left;
+  otherPlayer.right = data.right;
+  otherPlayer.up = data.up;
+  otherPlayer.down = data.down;
+  otherPlayer.lastX = data.x;
+  otherPlayer.lastY = data.y;
+  otherPlayer.lastRotation = data.rotation;
+  otherPlayer.velocity = data.velocity;
 }
 
 function onRemovePlayer(data) {
