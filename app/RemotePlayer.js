@@ -50,7 +50,7 @@ RemotePlayer.prototype.updateOther = function() {
       this.car.body.x = this.lastX;
       this.car.body.y = this.lastY;
       this.car.body.rotation = this.lastRotation;
-      this.car.body.velocity.destination = this.velocity;
+      this.car.body.data.velocity = this.velocity;
     }
     this.counter =0;
   }

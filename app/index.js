@@ -88,15 +88,17 @@ function onNewPlayer(data) {
 
 function onMovePlayer(data) {
   var otherPlayer = playerById(data.id);
-
-  otherPlayer.left = data.left;
-  otherPlayer.right = data.right;
-  otherPlayer.up = data.up;
-  otherPlayer.down = data.down;
-  otherPlayer.lastX = data.x;
-  otherPlayer.lastY = data.y;
-  otherPlayer.lastRotation = data.rotation;
-  otherPlayer.velocity = data.velocity;
+  if (otherPlayer) {
+    otherPlayer.updateData(data);
+  }
+  // otherPlayer.left = data.left;
+  // otherPlayer.right = data.right;
+  // otherPlayer.up = data.up;
+  // otherPlayer.down = data.down;
+  // otherPlayer.lastX = data.x;
+  // otherPlayer.lastY = data.y;
+  // otherPlayer.lastRotation = data.rotation;
+  // otherPlayer.velocity = data.velocity;
 }
 
 function onRemovePlayer(data) {
@@ -166,7 +168,7 @@ function getRandomPosition() {
   console.log("word height: " + game.world.height);
   console.log("word width: " + game.world.width);
   var position = {
-    x: Math.round(Math.random() * (700) + 35 ),
+    x: Math.round(Math.random() * (700) + 35),
     y: Math.round(Math.random() * (500) + 35)
   };
   console.log(position);
