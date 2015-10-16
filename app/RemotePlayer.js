@@ -13,12 +13,12 @@ var RemotePlayer = function(game, id, x, y) {
   this.right = {};
   this.up = {};
   this.down = {};
-  this.velocity = [0 ,0];
+  this.velocity = [0, 0];
   this.counter = 0;
 };
 
 
-RemotePlayer.prototype.updateData = function(data){
+RemotePlayer.prototype.updateData = function(data) {
   this.left = data.left;
   this.right = data.right;
   this.up = data.up;
@@ -32,9 +32,9 @@ RemotePlayer.prototype.updateData = function(data){
 RemotePlayer.prototype.updateOther = function() {
 
 
-   if (this.left) {
-     this.car.body.rotateLeft(100);
-   } else if (this.right) {
+  if (this.left) {
+    this.car.body.rotateLeft(100);
+  } else if (this.right) {
     this.car.body.rotateRight(100);
   } else {
     this.car.body.setZeroRotation();
@@ -45,18 +45,12 @@ RemotePlayer.prototype.updateOther = function() {
     this.car.body.reverse(400);
   }
 
-  if(this.counter == 10){
-    if (this.car.body.x !== this.lastX || this.car.body.y !== this.lastY) {
-      this.car.body.x = this.lastX;
-      this.car.body.y = this.lastY;
-      this.car.body.rotation = this.lastRotation;
-      this.car.body.data.velocity = this.velocity;
-    }
-    this.counter =0;
+  if (this.car.body.x !== this.lastX || this.car.body.y !== this.lastY) {
+    this.car.body.x = this.lastX;
+    this.car.body.y = this.lastY;
+    this.car.body.rotation = this.lastRotation;
+    this.car.body.data.velocity = this.velocity;
   }
-
-  this.counter++;
-
 };
 
 RemotePlayer.prototype.update = function() {
@@ -91,7 +85,7 @@ RemotePlayer.prototype.send = function() {
     x: this.car.body.x,
     y: this.car.body.y,
     rotation: this.car.body.rotation,
-    velocity : this.car.body.velocity.destination
+    velocity: this.car.body.velocity.destination
   };
 };
 
